@@ -2,7 +2,7 @@ import requests
 from tqdm import tqdm
 
 class ChatGLMModel:
-    def __init__(self, api_url, api_key, model_type='glm-4'):
+    def __init__(self, api_url, api_key, model_type='glm-4-plus'):
         self.api_url = api_url
         self.api_key = api_key
         self.model_type = model_type
