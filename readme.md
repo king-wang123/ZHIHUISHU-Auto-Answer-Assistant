@@ -35,8 +35,8 @@
 1. 克隆项目到本地：
 
    ```bash
-   git clone https://github.com/yourusername/yourproject.git
-   cd yourproject
+   git clone https://github.com/jason-king123/ZHIHUISHU-Auto-Answer-Assistant.git
+   cd ZHIHUISHU-Auto-Answer-Assistant
    ```
 
 2. 安装依赖库：
@@ -58,8 +58,8 @@
 
 ## 🤝 贡献与反馈
 
-- 如果在使用过程中遇到任何问题，欢迎在项目的[Issues](https://github.com/yourusername/yourproject/issues)页面提出。
-- 我们非常欢迎对代码的贡献，可以通过[Pull Requests](https://github.com/yourusername/yourproject/pulls)提交你的改进。
+- 如果在使用过程中遇到任何问题，欢迎在项目的[Issues](https://github.com/yourusername/ZHIHUISHU-Auto-Answer-Assistant/issues)页面提出。
+- 我们非常欢迎对代码的贡献，可以通过[Pull Requests](https://github.com/yourusername/ZHIHUISHU-Auto-Answer-Assistant/pulls)提交你的改进。
 - 如果你觉得这个项目对你有帮助，欢迎点个 Star 支持一下！
 
 ---
