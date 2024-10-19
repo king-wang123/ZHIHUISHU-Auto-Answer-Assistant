@@ -105,7 +105,6 @@ def auto_answer(driver):
 
 if __name__ == '__main__':
     # 2feb14563dc5588db13b1093690ab798.9QUuI93Fts6S22eD
-    # url = 'https://onlineexamh5new.zhihuishu.com/stuExamWeb.html#/webExamList/dohomework/278339/elp92Kn8/5XA4n6Ay/1000006387/4959/1'
     url = input("请输入题目链接：")
     driver = get_driver(url)
     input("请登录后按回车继续...")

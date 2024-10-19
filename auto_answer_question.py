@@ -38,52 +38,76 @@ def text_orc(image='question.png'):
 
 def get_answer(question):
     prompt = f"""
-你是一个智能答题助手，需要根据以下题目类型直接给出答案，无需解释。
+请仔细阅读以下题目并思考分析，根据题目类型，严格按照以下要求作答：
 
-- 单选题：从选项中选择一个正确的答案，并仅输出该选项（A、B、C或D）。
-- 多选题：选择所有正确的选项，并仅输出所有正确选项的字母，用','分隔，按字母顺序排列（如A,C）。
-- 判断题：分析题目并仅输出 "对" 或 "错"。
-
-请仔细阅读以下题目，并根据题目类型给出答案。
+选择题（单选）： 如果题目为单选题，请从选项中选择一个正确的答案，并仅输出该选项（A、B、C或D），不提供任何额外解释。
+选择题（多选）： 如果题目为多选题，请选择所有正确的选项，并仅输出所有正确选项的字母，用','分隔（如A,C），按字母顺序排列，不提供任何额外解释。
+判断题： 如果题目为判断题，请分析题目并仅输出 "对" 或 "错"，不提供任何额外解释。
+请遵循以上规则直接给出你的答案。
 
 题目：
 {question}
 
 你的答案："""
-    return model.get_response([prompt])[0][0]
+    answer_list = []
+    index = 0
+    while True:
+        cur_answer = model.get_response([prompt])[0][0]
+        print(f'大模型第{index+1}次输出：{cur_answer}')
+        if cur_answer in answer_list:
+            return cur_answer
+        answer_list.append(cur_answer)
+        index += 1
 
 
     
 # 进入测试页面之后开始自动答题
-def auto_answer_test(driver):
+def auto_answer(driver):
+    index = 0
     while True:
-        question_element = driver.find_element(By.XPATH, '//div[@class="examPaper_subject mt20"]')
+        question_element = driver.find_elements(By.XPATH, '//div[@class="examPaper_subject mt20"]')[index]
         question_element.screenshot('question.png')
-        question = text_orc()
-        print("题目：{}".format(question))
-        alphabet2num = {'A': 0, 'B': 1, 'C': 2, 'D': 3}
-        answer = get_answer(question) # answer 形如'A'  或 'B,D' 或 '对' 
+        question_str = text_orc()
+        print(f'第{index+1}题：{question_str}')
 
-        # 这里判断题单独处理是因为题目中对与错的顺序可能不一样
+        answer = get_answer(question_str) # answer 形如'A'  或 'B,D' 或 '对' 
+        print(f'最终答案：{answer}')
+
+        # 判断题中对与错的顺序可能不一样
         if '对' in answer or '错' in answer: # 判断题
-            pass
+            answer_elements = question_element.find_elements(By.XPATH, './/div[@class="label clearfix"]')
+            for answer_element in answer_elements:
+                if answer_element.text.strip() in answer:
+                    answer_element.click()
+                    time.sleep(random.uniform(0.2, 0.5))
+                    break
+                    
         else: # 选择题
             answer_list = []
             if ',' in answer: # 多选题
-                answer_list = [alphabet2num[i] for i in answer.split(',')]
+                answer_list = [(ord(i)-ord('A')) for i in answer.split(',')]
             else: # 单选题
-                answer_list = [alphabet2num[answer]]
+                answer_list = [(ord(answer)-ord('A'))]
+            for answer in answer_list:
+                question_element.find_elements(By.XPATH, './/div[@class="label clearfix"]')[answer].click()
+                time.sleep(random.uniform(0.2, 0.5))
+
         # 下一题
         next_button = driver.find_elements(By.XPATH, '//button[@class="el-button el-button--primary is-plain"]')[-1]
-        next_button.click()
-        time.sleep(random.uniform(1, 3))
         if next_button.text.strip() == '保存':
             # 提交作业
             submit_button = driver.find_element(By.XPATH, '//button[@class="el-button el-button--text btnStyleX btnStyleXSumit"]')
             submit_button.click()
-            time.sleep(random.uniform(1, 3))
+            time.sleep(random.uniform(1, 2))
+            # driver.switch_to.alert.accept()
+            input("请手动完成提交后按回车继续...")
+            # conform_button = driver.find_element(By.XPATH, '//button[@class="el-button el-button--default el-button--small el-button--primary"]')
+            # conform_button.click()
             print("提交成功")
             return
+        next_button.click()
+        time.sleep(random.uniform(0.5, 1))
+        index += 1
 
 
 
@@ -98,7 +122,7 @@ def start_answer(driver):
     window_handles = driver.window_handles
     # 切换到新的窗口
     driver.switch_to.window(window_handles[-1])
-    auto_answer_test(driver)
+    auto_answer(driver)
 
 # 按顺序自动做所有测试
 def auto_answer_tests(driver):
@@ -114,40 +138,9 @@ def main(url):
     driver = get_driver(url)
     input("请登录后按回车继续...")
     auto_answer_tests(driver)
+    input("请按任意键退出...")
     driver.quit()
 
 if __name__ == '__main__':
-    # url = 'https://onlineexamh5new.zhihuishu.com/stuExamWeb.html#/webExamList?recruitId=HvvwUjKFpfPJ6AMd1GD5dA%3D%3D'
-    # main(url)
-    url = 'https://onlineexamh5new.zhihuishu.com/stuExamWeb.html#/webExamList?recruitId=HvvwUjKFpfPJ6AMd1GD5dA%3D%3D'
-    driver = get_driver(url)
-    input("请登录后按回车继续...")
-    test_num = get_test_num(driver)
-    print("共有{}个测试待做".format(test_num))
-    if test_num == 0:
-        print("暂无可做的测试")
-    todo_test = driver.find_element(By.XPATH, '//div[@id="examBox"]/div/ul/li')
-    start_button = todo_test.find_element(By.XPATH, './/a[@title="开始答题"]')
-    start_button.click()
-    print("开始答题")
-    time.sleep(random.uniform(1, 3))
-    # 获取所有窗口的句柄
-    window_handles = driver.window_handles
-    # 切换到新的窗口
-    driver.switch_to.window(window_handles[-1])
-    # 获取新页面的源代码
-    new_page_source = driver.page_source
-    # 保存网页代码
-    with open('test.html', 'w', encoding='utf-8') as f:
-        f.write(new_page_source)
-    question_element = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.XPATH, '//div[@class="examPaper_subject mt20"]')))
-    # question_element = driver.find_element(By.XPATH, '//div[contains(@class, "examPaper_subject")]')
-    question_element.screenshot('question.png')
-    # question = text_orc()
-    # print("题目：{}".format(question))
-    # alphabet2num = {'A': 0, 'B': 1, 'C': 2, 'D': 3}
-    # answer = get_answer(question) # answer 形如'A'  或 'B,D' 或 '对' 
-    # print(answer)
-
-# class="examPaper_subject mt20"
+    url = input("请输入题目链接：")
+    main(url)
