@@ -92,7 +92,7 @@ _因为要加载 OCR 库，所以需要等待一段时间代码才会运行_
 python onepage.py
 ```
 
-![code_usage](./data/onepage.png)
+![code_usage](./data/onepage_example.png)
 
 **2. 输入答题列表页面 url，顺序完成所有测试答题**
 
@@ -100,7 +100,7 @@ python onepage.py
 python auto_answer_question.py
 ```
 
-![code_usage]()
+![code_usage](./data/all_example.png)
 
 ## 🤝 贡献与反馈
 

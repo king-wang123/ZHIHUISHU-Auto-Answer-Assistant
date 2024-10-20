@@ -21,6 +21,8 @@ def get_driver(url):
     options = webdriver.ChromeOptions()
     # selenium尝试连接https网站时会报SSL handshake failed, 加上以下两行代码可以忽略证书错误
     options.add_argument('--ignore-certificate-errors')
+    # 设置日志级别为3, 仅记录警告和错误
+    options.add_argument('--log-level=3')
     driver = webdriver.Chrome(options=options)
     driver.get(url)
     time.sleep(random.uniform(0.5, 2))
@@ -109,21 +111,6 @@ def auto_answer(driver):
         time.sleep(random.uniform(0.5, 1))
         index += 1
 
-
-
-# 做第一个测试
-def start_answer(driver):
-    todo_test = driver.find_element(By.XPATH, '//div[@id="examBox"]/div/ul/li')
-    start_button = todo_test.find_element(By.XPATH, './/a[@title="开始答题"]')
-    start_button.click()
-    print("开始答题")
-    time.sleep(random.uniform(1, 3))
-    # 获取所有窗口的句柄
-    window_handles = driver.window_handles
-    # 切换到新的窗口
-    driver.switch_to.window(window_handles[-1])
-    auto_answer(driver)
-
 # 按顺序自动做所有测试
 def auto_answer_tests(driver):
     while True:
@@ -132,7 +119,22 @@ def auto_answer_tests(driver):
         if test_num == 0:
             print("暂无可做的测试")
             return
-        start_answer(driver)
+        # 选择第一个测试
+        todo_test = driver.find_element(By.XPATH, '//div[@id="examBox"]/div/ul/li')
+        start_button = todo_test.find_element(By.XPATH, './/a[@title="开始答题"]')
+        # driver.execute_script("arguments[0].click();", start_button)
+        start_button.click()
+        print("开始答题")
+        time.sleep(random.uniform(3, 5))
+        # 获取当前窗口的句柄
+        current_window_handle = driver.current_window_handle
+        # 获取所有窗口的句柄
+        window_handles = driver.window_handles
+        # 切换到新的窗口
+        driver.switch_to.window(window_handles[-1])
+        auto_answer(driver)
+        # 答题结束后，切换回原来的窗口
+        driver.switch_to.window(current_window_handle)
 
 def main(url):
     driver = get_driver(url)
@@ -142,5 +144,5 @@ def main(url):
     driver.quit()
 
 if __name__ == '__main__':
-    url = input("请输入题目链接：")
+    url = input("请输入页面链接：")
     main(url)
