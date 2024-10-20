@@ -9,6 +9,7 @@
 ![项目展示视频](./data/auto_answer_zhihuishu.gif)
 
 答题过程：
+
 ![answer_example](./data/answer_example.png)
 
 调用大模型生成答案过程：
