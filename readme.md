@@ -6,9 +6,7 @@
 
 ## 🌈 项目展示
 
-<video controls width="320" height="240">
-  <source src="./data/auto_answer_zhihuishu.mp4" type="video/mp4">
-</video>
+https://github.com/jason-king123/ZHIHUISHU-Auto-Answer-Assistant/blob/main/data/auto_answer_zhihuishu.mp4
 
 ![answer_example](./data/answer_example.png)
 
