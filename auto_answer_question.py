@@ -17,6 +17,16 @@ ocr = CnOcr()
 api_key = input("请输入您的智普AI平台 api_key：")
 model = ChatGLMModel(api_url="https://open.bigmodel.cn/api/paas/v4/chat/completions", api_key=api_key)
 
+def error_handler(func):
+    def wrapper(*args, **kwargs):
+        while True:
+            try:
+                return func(*args, **kwargs)
+            except Exception as e:
+                print(f"函数 {func.__name__} 发生错误: {e}")
+                input("请修复错误并按回车键继续...")
+    return wrapper
+
 def get_driver(url):
     options = webdriver.ChromeOptions()
     # selenium尝试连接https网站时会报SSL handshake failed, 加上以下两行代码可以忽略证书错误
@@ -64,6 +74,7 @@ def get_answer(question):
 
     
 # 进入测试页面之后开始自动答题
+@error_handler
 def auto_answer(driver):
     index = 0
     while True:
@@ -112,6 +123,7 @@ def auto_answer(driver):
         index += 1
 
 # 按顺序自动做所有测试
+@error_handler
 def auto_answer_tests(driver):
     while True:
         test_num = get_test_num(driver)
