@@ -6,7 +6,7 @@
 
 ## 🌈 项目展示
 
-https://github.com/jason-king123/ZHIHUISHU-Auto-Answer-Assistant/blob/main/data/auto_answer_zhihuishu.mp4
+![项目展示视频](https://github.com/jason-king123/ZHIHUISHU-Auto-Answer-Assistant/blob/main/data/auto_answer_zhihuishu.mp4)
 
 ![answer_example](./data/answer_example.png)
 
