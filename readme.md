@@ -83,7 +83,9 @@ def get_answer(question):
 
 运行脚本：
 
-**输入答题页面 url，一次完成单测试答题**
+_因为要加载 OCR 库，所以需要等待一段时间代码才会运行_
+
+**1. 输入答题页面 url，一次完成单测试答题**
 
 ```bash
 python onepage.py
@@ -91,7 +93,7 @@ python onepage.py
 
 ![code_usage](./data/onepage.png)
 
-**输入答题列表页面 url，顺序完成所有测试答题**
+**2. 输入答题列表页面 url，顺序完成所有测试答题**
 
 ```bash
 python auto_answer_question.py
