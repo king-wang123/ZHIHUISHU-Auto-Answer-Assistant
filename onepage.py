@@ -16,6 +16,16 @@ ocr = CnOcr()
 api_key = input("请输入您的智普AI平台 api_key：")
 model = ChatGLMModel(api_url="https://open.bigmodel.cn/api/paas/v4/chat/completions", api_key=api_key)
 
+def error_handler(func):
+    def wrapper(*args, **kwargs):
+        while True:
+            try:
+                return func(*args, **kwargs)
+            except Exception as e:
+                print(f"函数 {func.__name__} 发生错误: {e}")
+                input("请修复错误并按回车键继续...")
+    return wrapper
+
 def get_driver(url):
     options = webdriver.ChromeOptions()
     # selenium尝试连接https网站时会报SSL handshake failed, 加上以下两行代码可以忽略证书错误
@@ -56,36 +66,39 @@ def get_answer(question):
         answer_list.append(cur_answer)
         index += 1
 
+@error_handler
+def answer(driver, index):
+    question_element = driver.find_elements(By.XPATH, '//div[@class="examPaper_subject mt20"]')[index]
+    question_element.screenshot('question.png')
+    question_str = text_orc()
+    print(f'第{index+1}题：{question_str}')
+
+    answer = get_answer(question_str) # answer 形如'A'  或 'B,D' 或 '对' 
+    print(f'最终答案：{answer}')
+
+    # 判断题中对与错的顺序可能不一样
+    if '对' in answer or '错' in answer: # 判断题
+        answer_elements = question_element.find_elements(By.XPATH, './/div[@class="label clearfix"]')
+        for answer_element in answer_elements:
+            if answer_element.text.strip() in answer:
+                answer_element.click()
+                time.sleep(random.uniform(0.2, 0.5))
+                break
+                
+    else: # 选择题
+        answer_list = []
+        if ',' in answer: # 多选题
+            answer_list = [(ord(i)-ord('A')) for i in answer.split(',')]
+        else: # 单选题
+            answer_list = [(ord(answer)-ord('A'))]
+        for answer in answer_list:
+            question_element.find_elements(By.XPATH, './/div[@class="label clearfix"]')[answer].click()
+            time.sleep(random.uniform(0.2, 0.5))
+
 def auto_answer(driver):
     index = 0
     while True:
-        question_element = driver.find_elements(By.XPATH, '//div[@class="examPaper_subject mt20"]')[index]
-        question_element.screenshot('question.png')
-        question_str = text_orc()
-        print(f'第{index+1}题：{question_str}')
-
-        answer = get_answer(question_str) # answer 形如'A'  或 'B,D' 或 '对' 
-        print(f'最终答案：{answer}')
-
-        # 判断题中对与错的顺序可能不一样
-        if '对' in answer or '错' in answer: # 判断题
-            answer_elements = question_element.find_elements(By.XPATH, './/div[@class="label clearfix"]')
-            for answer_element in answer_elements:
-                if answer_element.text.strip() in answer:
-                    answer_element.click()
-                    time.sleep(random.uniform(0.2, 0.5))
-                    break
-                    
-        else: # 选择题
-            answer_list = []
-            if ',' in answer: # 多选题
-                answer_list = [(ord(i)-ord('A')) for i in answer.split(',')]
-            else: # 单选题
-                answer_list = [(ord(answer)-ord('A'))]
-            for answer in answer_list:
-                question_element.find_elements(By.XPATH, './/div[@class="label clearfix"]')[answer].click()
-                time.sleep(random.uniform(0.2, 0.5))
-
+        answer(driver, index)
         # 下一题
         next_button = driver.find_elements(By.XPATH, '//button[@class="el-button el-button--primary is-plain"]')[-1]
         if next_button.text.strip() == '保存':
