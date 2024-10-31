@@ -2,7 +2,7 @@
 
 ## 📝 项目简介
 
-这是一个基于大语言模型（Large Language Models, LLM）的智慧树自动答题脚本，旨在帮助用户快速、准确地完成智慧树平台上的自动答题任务。本项目通过全自动答题的方式，无需题库，利用 LLM 的强大能力，多次生成答案以确保答案的准确性，能够极大地解放的生产力。
+这是一个基于大语言模型（Large Language Models, LLM）的智慧树自动答题脚本，旨在帮助用户快速、准确地完成智慧树平台上的自动答题任务。本项目通过全自动答题的方式，无需题库，利用 LLM 的强大能力，多次生成答案以确保答案的准确性，能够极大地解放生产力。
 
 ## 🌈 项目展示
 
@@ -45,14 +45,15 @@ def get_answer(question):
 
 - **全自动答题**：无需人工干预，自动完成答题过程。
 - **准确性保障**：通过多次生成答案，提高答案的准确性。
+- **代码鲁棒性**: 当遇到弹出验证或者一些未知错误后，脚本会停止运行，等待用户处理完后输入回车键继续运行。
 - **易于使用**：只要你的电脑安装了 Python 环境，注册了对应大模型 API，并安装了必要的库，就可以直接运行脚本。
 - **学习价值**：对于想要学习 Python 爬虫或自动化脚本以及大模型使用的同学，这是一个极好的练手项目。
 
 ## 🐞 已知问题与优化方向
 
-- **页面元素定位**: 题目元素被“#shadow-root (closed)”包裹，无法获取，只能使用 OCR 识别题目；提交作业后弹出的对话框无法定位，只能手动确定后再继续。
+- **页面元素定位**: ❗ 题目元素被“#shadow-root (closed)”包裹，导致无法获取，只能使用 OCR 识别题目；提交作业后弹出的对话框无法定位，只能手动确定后再继续。
 - **OCR 识别**：当前项目需要调用 OCR 库来识别题目，导致运行效率比较慢。计划使用更高效的 OCR 库，或者不用 OCR，直接用 Selenium 分析题目，以提高效率。
-- **答题准确率**：由于依赖大模型，答题准确率可能会受到影响。考虑调用多个大模型交叉验证，或者构建知识库做 RAG，以提高答题准确率。
+- **答题准确率**：由于依赖大模型，答题准确率会受到限制。考虑调用多个大模型交叉验证，或者构建知识库做 RAG，以提高答题准确率。
 - **增加支持的大模型**: 目前项目只支持智谱大模型，计划增加其他大模型的支持。
 - **流程优化**：优化使用流程。
 
@@ -61,7 +62,7 @@ def get_answer(question):
 ### 环境要求
 
 - 确保你的电脑安装了 Python。
-- 注册并获取 API-Key, 本项目目前只支持[智谱大模型](https://open.bigmodel.cn/console/overview)
+- 注册并获取 API-Key, 本项目目前只支持[智谱大模型](https://open.bigmodel.cn/console/overview)(新用户注册会送 token，项目默认使用`glm-4-plus`模型，如需切换模型请在`GLM.py`文件中修改)
 
 ### 安装步骤
 
@@ -104,8 +105,8 @@ python auto_answer_question.py
 
 ## 🤝 贡献与反馈
 
-- 如果在使用过程中遇到任何问题，欢迎在项目的[Issues](https://github.com/yourusername/ZHIHUISHU-Auto-Answer-Assistant/issues)页面提出, 作者看到一定会及时回复！
-- 我们非常欢迎对代码的贡献，可以通过[Pull Requests](https://github.com/yourusername/ZHIHUISHU-Auto-Answer-Assistant/pulls)提交你的改进。
+- 如果在使用过程中遇到任何问题，欢迎在项目的[Issues](https://github.com/king-wang123/ZHIHUISHU-Auto-Answer-Assistant/issues)页面提出, 作者看到一定会及时回复！
+- 我们非常欢迎对代码的贡献，可以通过[Pull Requests](https://github.com/king-wang123/ZHIHUISHU-Auto-Answer-Assistant/pulls)提交你的改进。
 - 如果你觉得这个项目对你有帮助，欢迎点个 Star 支持一下！
 
 ---
