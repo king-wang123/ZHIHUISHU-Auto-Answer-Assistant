@@ -2,3 +2,4 @@ requests
 tqdm
 selenium
 cnocr
+openai

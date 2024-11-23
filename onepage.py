@@ -3,7 +3,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from GLM import ChatGLMModel
+from model import get_model
 from cnocr import CnOcr
 import time
 import random
@@ -13,8 +13,9 @@ import logging
 logging.getLogger('selenium').setLevel(logging.WARNING)
 
 ocr = CnOcr()
-api_key = input("请输入您的智普AI平台 api_key：")
-model = ChatGLMModel(api_url="https://open.bigmodel.cn/api/paas/v4/chat/completions", api_key=api_key)
+
+# 初始化模型
+model = get_model()
 
 def error_handler(func):
     def wrapper(*args, **kwargs):
@@ -59,7 +60,7 @@ def get_answer(question):
     answer_list = []
     index = 0
     while True:
-        cur_answer = model.get_response([prompt])[0][0]
+        cur_answer = model.get_response(prompt)
         print(f'大模型第{index+1}次输出：{cur_answer}')
         if cur_answer in answer_list:
             return cur_answer
@@ -117,7 +118,6 @@ def auto_answer(driver):
         index += 1
 
 if __name__ == '__main__':
-    # 2feb14563dc5588db13b1093690ab798.9QUuI93Fts6S22eD
     url = input("请输入题目链接：")
     driver = get_driver(url)
     input("请登录后按回车继续...")
