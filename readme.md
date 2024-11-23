@@ -148,9 +148,9 @@ def get_answer(question):
 
 **顶部 url 地址栏中有一串字符，这个类似当前对话框的 id，运行脚本后把它的值当作 api_key 输入，后续请求会基于这个对话框来进行**
 
----
-
 ![Kimi](./data/Kimi.png)
+
+---
 
 #### 运行脚本：
 
