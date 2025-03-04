@@ -47,6 +47,6 @@ def get_model():
     return Model(model_name, api_key)
 
 # Example usage:
-model = get_model()
-response = model.get_response('你好，请问你是谁，你可以怎么帮助我呢？')
-print(response)
+# model = get_model()
+# response = model.get_response('你好，请问你是谁，你可以怎么帮助我呢？')
+# print(response)
