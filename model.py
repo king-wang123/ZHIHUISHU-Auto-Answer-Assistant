@@ -13,6 +13,12 @@ class Model:
         elif self.model_name == 'ChatGLM':
             from LLMs.ChatGLM import ChatGLMModel
             return ChatGLMModel(self.api_key)
+        elif self.model_name == 'ChatGPT':
+            from LLMs.ChatGPT import ChatGPTModel
+            return ChatGPTModel(self.api_key)
+        elif self.model_name == 'Deepseek':
+            from LLMs.DeepSeek import DeepSeekModel
+            return DeepSeekModel(self.api_key)
         else:
             raise ValueError(f"Unsupported model name: {self.model_name}")
 
@@ -22,14 +28,17 @@ class Model:
 
 def get_model():
     model_dict = {
-        '1' : 'Kimi',
-        '2' : 'ChatGLM'
+        '1' : 'Deepseek',
+        '2' : 'ChatGLM',
+        '3' : 'ChatGPT',
+        '4' : 'Kimi'
     }
     while True:
         try:
-            model_num = input("请输入模型编号：\n 1. Kimi\n 2. ChatGLM\n")
+            model_num = input("请输入模型编号：\n1. Deepseek\n2. ChatGLM\n3. ChatGPT\n4. Kimi\n")
             assert model_num in model_dict.keys()
             model_name = model_dict[model_num]
+            print(f"您选择的模型为：{model_name}")
             break
         except:
             print("输入错误，请重新输入！")
@@ -37,7 +46,7 @@ def get_model():
     api_key = input("请输入api_key：")
     return Model(model_name, api_key)
 
-# # Example usage:
-# model = Model('Kimi', 'sk-Jul9lPAlXAewurna49nRwlbJhCeIFLbXDxVNwGjguUoDPzzG')
-# response = model.get_response('What is the capital of France?')
-# print(response)
+# Example usage:
+model = get_model()
+response = model.get_response('你好，请问你是谁，你可以怎么帮助我呢？')
+print(response)

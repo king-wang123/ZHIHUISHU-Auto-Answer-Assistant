@@ -11,7 +11,7 @@ class KimiModel:
             'x-msh-device-id': '7376844345082903816',
             'X-Traffic-Id': 'co0oa9ucp7fctgveuro0',
             'sec-ch-ua-mobile': '?0',
-            'Authorization': '', # 需要按照 readme 说明填充！
+            'Authorization': 'Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ1c2VyLWNlbnRlciIsImV4cCI6MTczOTUxMzEyOCwiaWF0IjoxNzMxNzM3MTI4LCJqdGkiOiJjc3MzY2EyMzRwZTM3cnJlMDM1ZyIsInR5cCI6ImFjY2VzcyIsImFwcF9pZCI6ImtpbWkiLCJzdWIiOiJjbzBvYTl1Y3A3ZmN0Z3ZldXJvMCIsInNwYWNlX2lkIjoiY28wb2E5dWNwN2ZjdGd2ZXVybmciLCJhYnN0cmFjdF91c2VyX2lkIjoiY28wb2E5dWNwN2ZjdGd2ZXVybjAifQ.m-5Y225zh8UesctTcl4wNb8JnMyfJcu_WpZWyigSt5cYL2Bdwl_Ms9f92SwojsEwzwJq44iEK3VP3XDLdTZwSg', # 需要按照 readme 说明填充！
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
             'Content-Type': 'application/json',
             'x-msh-platform': 'web',
